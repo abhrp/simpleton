@@ -3,9 +3,8 @@ package com.github.abhrp.simpleton.util
 import android.text.TextUtils
 import com.github.abhrp.simpleton.BuildConfig
 import timber.log.Timber
-import javax.inject.Inject
 
-class Logger @Inject constructor() {
+object Logger {
 
     private val TAG = Logger::class.simpleName
 

@@ -4,16 +4,13 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import com.github.abhrp.cache.dao.ConfigDao
 import com.github.abhrp.cache.dao.UserDao
-import com.github.abhrp.cache.entity.ConfigEntity
 import com.github.abhrp.cache.entity.UserInfoEntity
 
-@Database(entities = [(UserInfoEntity::class), (ConfigEntity::class)], version = 1)
+@Database(entities = [(UserInfoEntity::class)], version = 1)
 abstract class SimpletonDatabase: RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
-    abstract fun getConfigDao(): ConfigDao
 
     companion object {
         private var INSTANCE: SimpletonDatabase? = null

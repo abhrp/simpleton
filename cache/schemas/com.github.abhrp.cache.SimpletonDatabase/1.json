@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2a3752987bf339ff8b0fa8ed6784bc08",
+    "identityHash": "22c91114981d18b0e9b5ceca4f1b4a45",
     "entities": [
       {
         "tableName": "user",
@@ -53,31 +53,11 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "config",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`last_cache_time` INTEGER NOT NULL, PRIMARY KEY(`last_cache_time`))",
-        "fields": [
-          {
-            "fieldPath": "lastCacheTime",
-            "columnName": "last_cache_time",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "last_cache_time"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2a3752987bf339ff8b0fa8ed6784bc08\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"22c91114981d18b0e9b5ceca4f1b4a45\")"
     ]
   }
 }

@@ -59,6 +59,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':remote')
     implementation project(':cache')
+    implementation project(':presentation')
 
     implementation appDependencies.rxKotlin
     implementation appDependencies.kotlin
