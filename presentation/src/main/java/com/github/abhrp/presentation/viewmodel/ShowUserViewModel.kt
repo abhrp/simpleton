@@ -24,7 +24,7 @@ class ShowUserViewModel @Inject constructor(private val showUser: ShowUser,
     private var userId: String? = null
     private var userName: String? = null
 
-    fun getUserId(): String {
+    private fun getUserId(): String {
         userId?.let {
             return it
         }

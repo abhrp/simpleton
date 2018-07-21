@@ -10,7 +10,7 @@ import javax.inject.Inject
 class ShowUser @Inject constructor(private val userRepository: UserRepository, postExecutionThread: PostExecutionThread) : ObservableUseCase<User, ShowUser.Params>(postExecutionThread) {
 
     public override fun buildUseCaseObservable(params: Params?): Observable<User> {
-        val forceRemote = if (params == null) false else params.forceRemote
+        val forceRemote = params?.forceRemote ?: false
         return userRepository.getUserInfo(forceRemote)
     }
 

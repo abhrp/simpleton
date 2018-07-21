@@ -7,9 +7,9 @@ import javax.inject.Inject
 class SimpletonSharedPreferences @Inject constructor(private val context: Context) {
 
     companion object {
-        private val PREF_NAME = "com.github.abhrp.cache.preferences"
+        private const val PREF_NAME = "com.github.abhrp.cache.preferences"
 
-        private val PREF_KEY_LAST_CACHE = "last_cache"
+        private const val PREF_KEY_LAST_CACHE = "last_cache"
     }
 
     private val simpletonPref: SharedPreferences

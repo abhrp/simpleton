@@ -7,8 +7,6 @@ object DatabaseConstants {
     const val PHONE_NUMBER_COL = "phone_number"
     const val PROFILE_PICTURE_COL = "profile_picture"
 
-    const val LAST_CACHE_TIME_COL = "last_cache_time"
-
     const val QUERY_SELECT_ALL = "select * from $USER_TABLE"
     const val QUERY_SELECT_USER = "select * from $USER_TABLE where id=:id"
     const val QUERY_DELETE_ALL = "delete from $USER_TABLE"

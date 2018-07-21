@@ -9,13 +9,13 @@ import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(AndroidInjectionModule::class,
-        ApplicationModule::class,
-        UiModule::class,
-        PresentationModule::class,
-        DataModule::class,
-        CacheModule::class,
-        RemoteModule::class))
+@Component(modules = [(AndroidInjectionModule::class),
+    (ApplicationModule::class),
+    (UiModule::class),
+    (PresentationModule::class),
+    (DataModule::class),
+    (CacheModule::class),
+    (RemoteModule::class)])
 interface ApplicationComponent {
 
     @Component.Builder
