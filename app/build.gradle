@@ -1,0 +1,125 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.github.abhrp.simpleton"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            versionNameSuffix ".debug"
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        preDexLibraries true
+        javaMaxHeapSize "3g"
+    }
+    androidExtensions {
+        experimental = true
+    }
+}
+
+dependencies {
+
+    def appDependencies = rootProject.ext.appDependencies
+    def appTestDependencies = rootProject.ext.appTestDependencies
+
+    implementation project(':data')
+    implementation project(':domain')
+    implementation project(':remote')
+    implementation project(':cache')
+
+    implementation appDependencies.rxKotlin
+    implementation appDependencies.kotlin
+    implementation appDependencies.kotlinReflect
+    implementation appDependencies.javaxAnnotation
+    implementation appDependencies.javaxInject
+    implementation appDependencies.androidAnnotations
+    implementation appDependencies.rxAndroid
+    implementation appDependencies.archRuntime
+    implementation appDependencies.archExtensions
+    implementation appDependencies.timber
+    implementation appDependencies.picasso
+    implementation appDependencies.supportAppCompat
+    implementation appDependencies.supportV4
+    implementation appDependencies.recyclerView
+    implementation appDependencies.design
+    implementation appDependencies.daggerSupport
+    implementation appDependencies.roomRuntime
+    implementation appDependencies.constraintLayout
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    kapt appDependencies.daggerProcessor
+    kapt appDependencies.daggerCompiler
+    kapt appDependencies.archCompiler
+    kapt appDependencies.roomCompiler
+
+    testImplementation appTestDependencies.kotlinUnit
+    testImplementation appTestDependencies.jUnit
+    testImplementation appTestDependencies.mockitoKotlin
+    testImplementation appTestDependencies.mockitoCore
+    testImplementation appTestDependencies.mockitoInline
+    androidTestImplementation appTestDependencies.mockitoAndroid
+    testImplementation appTestDependencies.assertJ
+    testImplementation appTestDependencies.archTesting
+    testImplementation appTestDependencies.robolectric
+
+    androidTestImplementation(appTestDependencies.androidTestRules) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestImplementation(appTestDependencies.androidRunner) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    androidTestImplementation(appTestDependencies.espressoCore) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    androidTestImplementation(appTestDependencies.espressoIntents) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    androidTestImplementation(appTestDependencies.espressoContrib) {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'appcompat'
+        exclude module: 'appcompat-v7'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'design'
+    }
+
+    kaptTest appDependencies.daggerCompiler
+    kaptAndroidTest appDependencies.daggerCompiler
+}
