@@ -36,17 +36,48 @@ class UserInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
         setContentView(R.layout.activity_user_info)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ShowUserViewModel::class.java)
-        setSupportActionBar(toolbar)
+
+        setUpActionBar()
         setUpDeleteUserButton()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ShowUserViewModel::class.java)
     }
 
+    private fun setUpActionBar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.return_app)
+    }
+
+    private fun setUpDeleteUserButton() {
+        deleteUser.setOnClickListener {
+            deleteUser()
+        }
+    }
 
     override fun onStart() {
         super.onStart()
         getUser(false)
         observeDeleteUser()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.user_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            when (item.itemId) {
+                android.R.id.home -> {
+                    onBackPressed()
+                }
+                R.id.action_refresh -> {
+                    refreshFromRemote()
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun getUser(forceRemote: Boolean) {
@@ -67,13 +98,14 @@ class UserInfoActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
 
                 resource.data?.let {
-                    viewModel.setUserId(it.id)
-                    viewModel.setUserName("${it.firstName} ${it.lastName}")
+                    val model = mapper.mapToModel(it)
+                    viewModel.setUserId(model.id)
+                    viewModel.setUserName("${model.firstName} ${model.lastName}")
                     toolbar.title = viewModel.getUserName()
-                    Picasso.get().load(it.profilePicture).transform(PicassoCircleTransform()).into(userImage)
+                    Picasso.get().load(model.profilePicture).transform(PicassoCircleTransform()).into(userImage)
                     userName.text = getString(R.string.name, viewModel.getUserName())
-                    userPhone.text = getString(R.string.phone, it.phoneNumber)
-                    userEmail.text = getString(R.string.email, it.email)
+                    userPhone.text = getString(R.string.phone, model.phoneNumber)
+                    userEmail.text = getString(R.string.email, model.email)
                 }
             }
             ResourceState.ERROR -> {
@@ -91,11 +123,6 @@ class UserInfoActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpDeleteUserButton() {
-        deleteUser.setOnClickListener {
-            deleteUser()
-        }
-    }
 
     private fun deleteUser() {
         viewModel.getUser().removeObservers(this)
@@ -123,25 +150,6 @@ class UserInfoActivity : AppCompatActivity() {
                 Toast.makeText(this, resource.error, Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.user_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        item?.let {
-            when (item.itemId) {
-                android.R.id.home -> {
-                    onBackPressed()
-                }
-                R.id.action_refresh -> {
-                    refreshFromRemote()
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun refreshFromRemote() {
