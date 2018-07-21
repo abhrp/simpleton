@@ -1,0 +1,62 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.sourceCompatibility
+    }
+}
+
+dependencies {
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+
+    implementation project(':domain')
+
+    implementation presentationDependencies.kotlin
+    implementation presentationDependencies.rxKotlin
+    implementation presentationDependencies.javaxAnnotation
+    implementation presentationDependencies.javaxInject
+    implementation presentationDependencies.gson
+    implementation presentationDependencies.dagger
+    kapt presentationDependencies.daggerCompiler
+    implementation presentationDependencies.rxAndroid
+    implementation presentationDependencies.archRuntime
+    implementation presentationDependencies.archExtensions
+    kapt presentationDependencies.archCompiler
+
+    testImplementation presentationTestDependencies.kotlinUnit
+    testImplementation presentationTestDependencies.jUnit
+    testImplementation presentationTestDependencies.mockitoKotlin
+    testImplementation presentationTestDependencies.mockitoCore
+    testImplementation presentationTestDependencies.mockitoInline
+    testImplementation presentationTestDependencies.assertJ
+    testImplementation presentationTestDependencies.archTesting
+    testImplementation presentationTestDependencies.robolectric
+    androidTestImplementation presentationTestDependencies.androidTestRules
+    androidTestImplementation presentationTestDependencies.androidRunner
+}
