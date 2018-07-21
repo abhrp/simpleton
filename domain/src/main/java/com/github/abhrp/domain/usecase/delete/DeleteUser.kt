@@ -17,7 +17,7 @@ class DeleteUser @Inject constructor(private val userRepository: UserRepository,
 
     data class Params constructor(val id: String) {
         companion object {
-            fun forMovie(id: String): Params = Params(id)
+            fun forUser(id: String): Params = Params(id)
         }
     }
 

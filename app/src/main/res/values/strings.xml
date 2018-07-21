@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Simpleton</string>
-    <string name="title_activity_user_info">UserInfoActivity</string>
+    <string name="delete_user">Delete user</string>
+    <string name="user_profile_picture">User\'s profile picture</string>
+    <string name="return_app">Return</string>
+    <string name="name">Name : %1$s</string>
+    <string name="phone">Phone : %1$s</string>
+    <string name="email">Email : %1$s</string>
+    <string name="user_deleted_message">%1$s has been deleted</string>
+    <string name="action_settings">Settings</string>
 </resources>

@@ -6,6 +6,6 @@ import io.reactivex.Observable
 
 
 interface UserRepository {
-    fun getUserInfo(): Observable<User>
+    fun getUserInfo(forceRemote: Boolean): Observable<User>
     fun deleteUser(id: String): Completable
 }

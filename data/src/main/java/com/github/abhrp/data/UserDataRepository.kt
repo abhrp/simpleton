@@ -14,14 +14,14 @@ class UserDataRepository @Inject constructor(private val userCache: UserCache,
                                              private val userDataStoreFactory: UserDataStoreFactory,
                                              private val userMapper: UserMapper): UserRepository {
 
-    override fun getUserInfo(): Observable<User> {
+    override fun getUserInfo(forceRemote: Boolean): Observable<User> {
         return Observable.zip(userCache.isUserCached().toObservable(),
                 userCache.isCacheExpired().toObservable(),
                 BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { isUserCached, isCacheExpired ->
                     Pair(isUserCached, isCacheExpired)
                 })
                 .flatMap {
-                    userDataStoreFactory.getUserDataStore(it.first, it.second).getUser()
+                    userDataStoreFactory.getUserDataStore(it.first, it.second, forceRemote).getUser()
                 }
                 .flatMap {
                     userDataStoreFactory.getUserCacheDataStore().saveUser(it).andThen(Observable.just(it))

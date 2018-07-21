@@ -21,6 +21,31 @@ class ShowUserViewModel @Inject constructor(private val showUser: ShowUser,
     private val liveDataForGetUser: MutableLiveData<Resource<UserView>> = MutableLiveData()
     private val liveDataForDeleteUser: MutableLiveData<Resource<Boolean>> = MutableLiveData()
 
+    private var userId: String? = null
+    private var userName: String? = null
+
+    fun getUserId(): String {
+        userId?.let {
+            return it
+        }
+        return ""
+    }
+
+    fun setUserId(userId: String?) {
+        this.userId = userId
+    }
+
+    fun setUserName(userName: String?) {
+        this.userName = userName
+    }
+
+    fun getUserName(): String {
+        userName?.let {
+            return it
+        }
+        return ""
+    }
+
     override fun onCleared() {
         showUser.disposeAll()
         super.onCleared()
@@ -35,15 +60,19 @@ class ShowUserViewModel @Inject constructor(private val showUser: ShowUser,
     }
 
     fun deleteUserFromResource() {
-        liveDataForDeleteUser.postValue(Resource(ResourceState.LOADING, null, null))
-        return deleteUser.execute(DeleteUserSubscriber())
+        val id = getUserId()
+        if (id.isEmpty()) {
+            liveDataForDeleteUser.postValue(Resource(ResourceState.ERROR, null, "User already deleted"))
+        } else {
+            liveDataForDeleteUser.postValue(Resource(ResourceState.LOADING, null, null))
+            return deleteUser.execute(DeleteUserSubscriber(), DeleteUser.Params.forUser(getUserId()))
+        }
     }
 
-    fun fetchUser() {
+    fun fetchUser(forceRemote: Boolean) {
         liveDataForGetUser.postValue(Resource(ResourceState.LOADING, null, null))
-        return showUser.execute(UserSubscriber())
+        return showUser.execute(UserSubscriber(), ShowUser.Params.fromSource(forceRemote))
     }
-
 
     inner class UserSubscriber : DisposableObserver<User>() {
         override fun onComplete() {
