@@ -8,9 +8,12 @@ import javax.inject.Inject
 
 class DeleteUser @Inject constructor(private val userRepository: UserRepository, postExecutionThread: PostExecutionThread): CompletableUseCase<DeleteUser.Params>(postExecutionThread) {
 
-    override fun buildUseCaseCompletable(params: Params?): Completable {
+    public override fun buildUseCaseCompletable(params: Params?): Completable {
         params?.let {
-            return userRepository.deleteUser(params.id)
+            if (it.id.isEmpty()) {
+                throw IllegalArgumentException("User id cannot be empty or null")
+            }
+            return userRepository.deleteUser(it.id)
         }
         throw IllegalArgumentException("Params cannot be null")
     }
